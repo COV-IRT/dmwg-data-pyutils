@@ -11,7 +11,7 @@ from utils import captured_output, cleanup_files
 
 class TestCommonIO(unittest.TestCase):
     def test_load_json_file(self):
-        tobj = {"test": 1}
+        tobj = {"tree": 1}
         (fd, fn) = tempfile.mkstemp()
         try:
             with open(fn, "wt") as o:
@@ -23,15 +23,15 @@ class TestCommonIO(unittest.TestCase):
             cleanup_files(fn)
 
 
-class TestNextStrainTree(unittest.TestCase):
+class TestNextStrainParser(unittest.TestCase):
     def test_from_file_path(self):
-        tobj = {"test": 1}
+        tobj = {"tree": 1}
         (fd, fn) = tempfile.mkstemp()
         try:
             with open(fn, "wt") as o:
                 json.dump(tobj, o)
 
-            res = NextStrainTree.from_file_path(fn)
+            res = NextStrainParser.from_file_path(fn)
             self.assertTrue(isinstance(res, NextStrainParser))
             self.assertEqual(res.obj, tobj)
         finally:

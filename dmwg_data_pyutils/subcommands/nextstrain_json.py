@@ -6,7 +6,7 @@ viral mutations from the nextstrain JSON file.
 import os
 import gzip
 
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional, List, Dict, Any, TextIO
 
 from dmwg_data_pyutils.logger import Logger
 from dmwg_data_pyutils.subcommands import Subcommand
@@ -56,7 +56,7 @@ class ParseNextStrain(Subcommand):
             o.write("\t".join(cls.colnames()) + "\n")
             for record in nstree.mutation_traversal_generator():
                 if total > 0 and total % 1000 == 0:
-                    self.logger.info("Parsed {} records.".format(total))
+                    logger.info("Parsed {} records.".format(total))
                 cls._write_record(record, o)
                 total += 1
         logger.info("Completed. Parsed {} records.".format(total))
@@ -104,12 +104,12 @@ class ParseNextStrain(Subcommand):
         instance.
         """
         if run_download:
-            ns_obj = NextStrainTree.from_url()
+            ns_obj = NextStrainParser.from_url()
             if dl_location:
                 with open(dl_location, "wt") as o:
                     json.dump(ns_obj.obj, o, sort_keys=True, indent=2)
         else:
-            ns_obj = NextStrainTree.from_file_path(dl_location)
+            ns_obj = NextStrainParser.from_file_path(dl_location)
 
         return ns_obj
 

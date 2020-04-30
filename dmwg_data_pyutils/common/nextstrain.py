@@ -5,7 +5,7 @@
 import json
 import gzip
 import urllib.request
-from typing import List, Dict, Any, Optional, Iterable
+from typing import List, Dict, Any, Optional, Union, Callable
 
 from dmwg_data_pyutils.logger import Logger
 from dmwg_data_pyutils.common.io import load_json_file
@@ -145,13 +145,14 @@ class NextStrainParser:
         Parses the attr values into a dict determined by
         key_list. 
         """
-        curr = {i: get_value(attrs.get(i)) for i in key_list}
+        curr = {i: self.get_value(attrs.get(i)) for i in key_list}
         return curr
 
+    # ) -> Callable[[List[Dict[str, Union[str, List[str]]]]], Dict[str, List[str]]]:
     def _collect_mutations(
         self,
         node: Dict[str, Any],
-        muts=Optional[List[Dict[str, Union[str, List[str]]]]],
+        muts: Optional[List[Dict[str, Union[str, List[str]]]]] = None,
     ) -> Dict[str, List[str]]:
         """
         Traverses all the way back to root from current node, collecting
@@ -163,7 +164,7 @@ class NextStrainParser:
         if node["name"] == parent["name"]:
             return self._mut_reduce(muts)
         muts.append(node.get("branch_attrs", {}).get("mutations", {}))
-        return self.mutation_traversal(parent, muts)
+        return self._collect_mutations(parent, muts)
 
     def _mut_reduce(
         self, muts: List[Dict[str, Union[str, List[str]]]]

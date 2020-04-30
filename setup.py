@@ -9,8 +9,8 @@ setup(
     license = "Apache 2.0",
     packages = find_packages(),
     python_requires='>=3.5',
-    entry_points= {
-        'console_scripts':
-        ['dmwg-data-pyutils=dmwg_data_pyutils.__main__:main']
-    },
+    entry_points= ''' 
+        [console_scripts]
+        dmwg-data-pyutils=dmwg_data_pyutils.__main__:main
+    ''', 
 )
