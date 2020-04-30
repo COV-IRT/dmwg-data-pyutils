@@ -33,5 +33,6 @@ def main(args=None, extra_subparser=None):
     # Finish
     logger.info("Finished!")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

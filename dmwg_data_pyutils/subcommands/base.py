@@ -8,6 +8,7 @@ from abc import ABCMeta, abstractmethod
 
 from dmwg_data_pyutils.types import ArgParserT, NamespaceT
 
+
 class Subcommand(metaclass=ABCMeta):
     @classmethod
     @abstractmethod
@@ -40,8 +41,8 @@ class Subcommand(metaclass=ABCMeta):
     def add(cls, subparsers: ArgParserT) -> ArgParserT:
         """Adds the given subcommand to the subparsers."""
         subparser = subparsers.add_parser(
-            name=cls.__tool_name__(),
-            description=cls.__get_description__())
+            name=cls.__tool_name__(), description=cls.__get_description__()
+        )
 
         cls.__add_arguments__(subparser)
         subparser.set_defaults(func=cls.main)
