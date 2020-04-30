@@ -7,6 +7,7 @@ from typing import NewType
 from argparse import ArgumentParser, Namespace
 from logging import Logger
 
+
 # Argparser types
 ArgParserT = NewType("ArgParserT", ArgumentParser)
 NamespaceT = NewType("NamespaceT", Namespace)
