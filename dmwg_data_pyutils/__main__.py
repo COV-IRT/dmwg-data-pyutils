@@ -6,6 +6,7 @@ import datetime
 import sys
 
 from dmwg_data_pyutils.logger import Logger
+from dmwg_data_pyutils.subcommands import ParseNextStrain
 
 
 def main(args=None, extra_subparser=None):
@@ -21,6 +22,8 @@ def main(args=None, extra_subparser=None):
     p = argparse.ArgumentParser("DMWG Data Utils")
     subparsers = p.add_subparsers(dest="subcommand")
     subparsers.required = True
+
+    ParseNextStrain.add(subparsers=subparsers)
 
     if extra_subparser:
         extra_subparser.add(subparsers=subparsers)

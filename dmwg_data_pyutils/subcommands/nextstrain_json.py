@@ -19,7 +19,7 @@ from dmwg_data_pyutils.common.nextstrain import (
 )
 
 
-class ParseNextstrain(Subcommand):
+class ParseNextStrain(Subcommand):
     @classmethod
     def __add_arguments__(cls, parser: ArgParserT):
         """Add the arguments to the parser"""
