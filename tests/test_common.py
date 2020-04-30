@@ -14,7 +14,7 @@ class TestCommonIO(unittest.TestCase):
         tobj = {"test": 1}
         (fd, fn) = tempfile.mkstemp()
         try:
-            with open(fn, 'wt') as o:
+            with open(fn, "wt") as o:
                 json.dump(tobj, o)
 
             res = load_json_file(fn)
@@ -22,15 +22,16 @@ class TestCommonIO(unittest.TestCase):
         finally:
             cleanup_files(fn)
 
+
 class TestNextStrainTree(unittest.TestCase):
     def test_from_file_path(self):
         tobj = {"test": 1}
         (fd, fn) = tempfile.mkstemp()
         try:
-            with open(fn, 'wt') as o:
+            with open(fn, "wt") as o:
                 json.dump(tobj, o)
 
-            res = NextStrainTree.from_file_path(fn) 
+            res = NextStrainTree.from_file_path(fn)
             self.assertTrue(isinstance(res, NextStrainParser))
             self.assertEqual(res.obj, tobj)
         finally:

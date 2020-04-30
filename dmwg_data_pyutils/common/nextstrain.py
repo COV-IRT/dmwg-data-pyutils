@@ -11,7 +11,7 @@ from dmwg_data_pyutils.logger import Logger
 from dmwg_data_pyutils.common.io import load_json_file
 
 
-NEXTSTRAIN_JSON_URL = 'http://data.nextstrain.org/ncov_global.json'
+NEXTSTRAIN_JSON_URL = "http://data.nextstrain.org/ncov_global.json"
 NODE_ATTRS = [
     "country",
     "division",
@@ -24,16 +24,31 @@ NODE_ATTRS = [
     "recency",
     "num_date",
 ]
-MUTATION_KEYS = ['E', 'M', 'N', 'ORF10', 'ORF14', 'ORF1a',
-                'ORF1b', 'ORF3a', 'ORF6', 'ORF7a', 'ORF7b',
-                'ORF8', 'ORF9b', 'S', 'nuc']
+MUTATION_KEYS = [
+    "E",
+    "M",
+    "N",
+    "ORF10",
+    "ORF14",
+    "ORF1a",
+    "ORF1b",
+    "ORF3a",
+    "ORF6",
+    "ORF7a",
+    "ORF7b",
+    "ORF8",
+    "ORF9b",
+    "S",
+    "nuc",
+]
+
 
 class NextStrainParser:
     def __init__(self, obj: Dict[str, Any]):
         """Initialize the NextStrainTree by passing the deserialized
         JSON object.
-        """ 
-        self.logger = Logger.get_logger("NextStrainTree") 
+        """
+        self.logger = Logger.get_logger("NextStrainTree")
         self.obj = obj
         assert "tree" in self.obj
 
@@ -43,21 +58,21 @@ class NextStrainParser:
         return self.obj["tree"]
 
     @classmethod
-    def from_file_path(cls, file_path: str) -> object: 
+    def from_file_path(cls, file_path: str) -> object:
         """Initialize from file path"""
         dat = load_json_file(file_path)
         return cls(dat)
 
     @classmethod
-    def from_url(cls, other_url: Optional[str] = None) -> object: 
-        """Initialize from URL. By default uses NEXTSTRAIN_JSON_URL.""" 
+    def from_url(cls, other_url: Optional[str] = None) -> object:
+        """Initialize from URL. By default uses NEXTSTRAIN_JSON_URL."""
         _url = NEXTSTRAIN_JSON_URL if other_url is None else other_url
         dat = None
         with urllib.request.urlopen(url) as f:
             # want to check if this is gzip, so check for magic.
             # right now it is gzipped.
             _obj = f.read()
-            if _obj[:2] == b'\x1f\x8b':
+            if _obj[:2] == b"\x1f\x8b":
                 dat = json.loads(gzip.decompress(_obj))
             else:
                 dat = json.loads(_obj)
@@ -71,7 +86,7 @@ class NextStrainParser:
         """
         self._append_parents()
         for node in self._flatten_nodes():
-            dat = {'parent': node['parent']['name'], 'name': node['name']}
+            dat = {"parent": node["parent"]["name"], "name": node["name"]}
             dat.update(self.parse_attrs(node["node_attrs"], NODE_ATTRS))
             mutations = self._collect_mutations(node)
             dat.update(self.parse_attrs(mutations, MUTATION_KEYS))
@@ -82,7 +97,7 @@ class NextStrainParser:
         Traverses the tree and adds in the parents. This *mutates*
         the object! This is adapted from Trevor Bradford and Richard Neher's
         javascript work in auspice (https://github.com/nextstrain/auspice).
-        """ 
+        """
         self.root["parent"] = self.root
         stack = []
         while len(stack) != 0:
@@ -97,22 +112,22 @@ class NextStrainParser:
         Traverses the tree and returns a list of ordered nodes. 
         This is adapted from Trevor Bradford and Richard Neher's
         javascript work in auspice (https://github.com/nextstrain/auspice).
-        """ 
+        """
         stack = [self.root]
         array = []
         dic = {}
         while len(stack) != 0:
             node = stack.pop()
-            name = node['name']
+            name = node["name"]
             if name not in dic:
                 dic[name] = True
                 array.append(node)
- 
+
             if node.get("children"):
                 for child in node["children"]:
                     child["parent"] = node
                     stack.append(child)
-        return array 
+        return array
 
     def get_value(self, item: Any) -> Any:
         """
@@ -120,20 +135,24 @@ class NextStrainParser:
         """
         if isinstance(item, dict):
             return item["value"]
-        #elif isinstance(item, list):
+        # elif isinstance(item, list):
         #    return ','.join(item)
         else:
             return item
-    
-    def parse_attrs(self, attrs: Dict[str, Any], key_list: List[str]) -> Dict[str, Any]: 
+
+    def parse_attrs(self, attrs: Dict[str, Any], key_list: List[str]) -> Dict[str, Any]:
         """
         Parses the attr values into a dict determined by
         key_list. 
         """
-        curr = {i : get_value(attrs.get(i)) for i in key_list}
+        curr = {i: get_value(attrs.get(i)) for i in key_list}
         return curr
 
-    def _collect_mutations(self, node: Dict[str, Any], muts=Optional[List[Dict[str, Union[str, List[str]]]]]) -> Dict[str, List[str]]:
+    def _collect_mutations(
+        self,
+        node: Dict[str, Any],
+        muts=Optional[List[Dict[str, Union[str, List[str]]]]],
+    ) -> Dict[str, List[str]]:
         """
         Traverses all the way back to root from current node, collecting
         mutations.
@@ -146,7 +165,9 @@ class NextStrainParser:
         muts.append(node.get("branch_attrs", {}).get("mutations", {}))
         return self.mutation_traversal(parent, muts)
 
-    def _mut_reduce(self, muts: List[Dict[str, Union[str, List[str]]]]) -> Dict[str, List[str]]:
+    def _mut_reduce(
+        self, muts: List[Dict[str, Union[str, List[str]]]]
+    ) -> Dict[str, List[str]]:
         """
         Gets the unique set of mutations after traversal.
         """
