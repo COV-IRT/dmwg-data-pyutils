@@ -3,6 +3,7 @@ viral mutations from the nextstrain JSON file.
 
 @author: Kyle Hernandez <kmhernan@uchicago.edu>
 """
+import json
 import os
 import gzip
 

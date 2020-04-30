@@ -68,7 +68,7 @@ class NextStrainParser:
         """Initialize from URL. By default uses NEXTSTRAIN_JSON_URL."""
         _url = NEXTSTRAIN_JSON_URL if other_url is None else other_url
         dat = None
-        with urllib.request.urlopen(url) as f:
+        with urllib.request.urlopen(_url) as f:
             # want to check if this is gzip, so check for magic.
             # right now it is gzipped.
             _obj = f.read()
