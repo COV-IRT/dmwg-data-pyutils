@@ -11,6 +11,16 @@ from utils import captured_output, cleanup_files
 class TestNextStrainParser(unittest.TestCase):
     to_remove = []
 
+    def test_from_file_path_assert(self):
+        tobj = {"_tree": 1}
+        (fd, fn) = tempfile.mkstemp()
+        self.to_remove.append(fn)
+        with open(fn, "wt") as o:
+            json.dump(tobj, o)
+
+        with self.assertRaises(AssertionError):
+            res = NextStrainParser.from_file_path(fn)
+
     def test_from_file_path(self):
         tobj = {"tree": 1}
         (fd, fn) = tempfile.mkstemp()

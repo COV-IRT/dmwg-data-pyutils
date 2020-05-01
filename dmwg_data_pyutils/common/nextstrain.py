@@ -48,7 +48,7 @@ class NextStrainParser:
         """Initialize the NextStrainTree by passing the deserialized
         JSON object.
         """
-        self.logger = Logger.get_logger("NextStrainTree")
+        self.logger = Logger.get_logger("NextStrainParser")
         self.obj = obj
         assert "tree" in self.obj
 
