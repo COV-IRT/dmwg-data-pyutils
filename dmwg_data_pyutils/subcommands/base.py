@@ -6,7 +6,7 @@ based off of Nils Homer's work (https://github.com/nh13).
 """
 from abc import ABCMeta, abstractmethod
 
-from dmwg_data_pyutils.types import ArgParserT, NamespaceT
+from dmwg_data_pyutils.common.types import ArgParserT, NamespaceT
 
 
 class Subcommand(metaclass=ABCMeta):

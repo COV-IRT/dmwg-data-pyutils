@@ -7,7 +7,7 @@ import gzip
 import urllib.request
 from typing import List, Dict, Any, Optional, Union, Callable
 
-from dmwg_data_pyutils.logger import Logger
+from dmwg_data_pyutils.common.logger import Logger
 from dmwg_data_pyutils.common.io import load_json_file
 
 

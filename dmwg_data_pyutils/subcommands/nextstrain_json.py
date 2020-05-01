@@ -9,15 +9,17 @@ import gzip
 
 from typing import Tuple, Optional, List, Dict, Any, TextIO
 
-from dmwg_data_pyutils.logger import Logger
-from dmwg_data_pyutils.subcommands import Subcommand
+from dmwg_data_pyutils.common.logger import Logger
 from dmwg_data_pyutils.common.io import load_json_file
-from dmwg_data_pyutils.types import ArgParserT, NamespaceT, LoggerT
+from dmwg_data_pyutils.common.types import ArgParserT, NamespaceT, LoggerT
 from dmwg_data_pyutils.common.nextstrain import (
     NextStrainParser,
     NODE_ATTRS,
     MUTATION_KEYS,
 )
+
+from dmwg_data_pyutils.subcommands import Subcommand
+
 
 
 class ParseNextStrain(Subcommand):
