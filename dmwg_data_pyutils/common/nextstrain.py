@@ -135,8 +135,6 @@ class NextStrainParser:
         """
         if isinstance(item, dict):
             return item["value"]
-        # elif isinstance(item, list):
-        #    return ','.join(item)
         else:
             return item
 
@@ -148,7 +146,6 @@ class NextStrainParser:
         curr = {i: self.get_value(attrs.get(i)) for i in key_list}
         return curr
 
-    # ) -> Callable[[List[Dict[str, Union[str, List[str]]]]], Dict[str, List[str]]]:
     def _collect_mutations(
         self,
         node: Dict[str, Any],
