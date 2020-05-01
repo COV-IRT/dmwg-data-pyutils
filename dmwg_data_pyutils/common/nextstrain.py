@@ -12,6 +12,7 @@ from dmwg_data_pyutils.common.io import load_json_file
 
 
 NEXTSTRAIN_JSON_URL = "http://data.nextstrain.org/ncov_global.json"
+# TODO - infer from json metadata?
 NODE_ATTRS = [
     "country",
     "division",
