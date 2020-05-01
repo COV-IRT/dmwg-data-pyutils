@@ -5,7 +5,7 @@ import os
 from io import StringIO
 from contextlib import contextmanager
 
-from dmwg_data_pyutils.logger import Logger
+from dmwg_data_pyutils.common.logger import Logger
 
 
 @contextmanager
