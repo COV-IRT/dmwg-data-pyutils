@@ -32,5 +32,15 @@ class TestNextStrainParser(unittest.TestCase):
         self.assertTrue(isinstance(res, NextStrainParser))
         self.assertEqual(res.obj, tobj)
 
+    def test_get_value(self):
+        dat = {'tree': {'value': 0}}
+        obj = NextStrainParser(dat)
+        res = obj.get_value(dat['tree'])
+        self.assertEqual(res, 0)
+
+        dat = {'tree': 0}
+        res = obj.get_value(dat['tree'])
+        self.assertEqual(res, 0)
+
     def tearDown(self):
         cleanup_files(TestNextStrainParser.to_remove)
