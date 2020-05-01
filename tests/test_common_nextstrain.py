@@ -61,5 +61,14 @@ class TestNextStrainParser(unittest.TestCase):
         self.assertEqual(obj.root["parent"]['name'], obj.root["name"])
         self.assertEqual(obj.root['name'], obj.root["children"][0]['parent']['name'])
 
+    def test__flatten_nodes(self):
+        dat = {'tree': {'name': "node0", "children": [{"name": "node1"}]}}
+        obj = NextStrainParser(dat)
+        obj._append_parents()
+        res = obj._flatten_nodes()
+        self.assertEqual(len(res), 2)
+        self.assertEqual(res[0]['name'], 'node0')
+        self.assertEqual(res[1]['name'], 'node1')
+
     def tearDown(self):
         cleanup_files(TestNextStrainParser.to_remove)
