@@ -104,7 +104,10 @@ class ParseNextStrain(Subcommand):
     ) -> NextStrainParser:
         """
         Performs the actual loading of the JSON file into a `NextStrainParser`
-        instance.
+        instance. Caution this implementation is dangerous because some member
+        functions of the `NextStrainParser` mutate the loaded JSON, so you must
+        write out the json *before* calling other functions. I discuss different
+        implementations in the `NextStrainParser` class.
         """
         if run_download:
             ns_obj = NextStrainParser.from_url()
