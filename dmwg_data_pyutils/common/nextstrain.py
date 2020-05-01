@@ -99,7 +99,7 @@ class NextStrainParser:
         javascript work in auspice (https://github.com/nextstrain/auspice).
         """
         self.root["parent"] = self.root
-        stack = []
+        stack = [self.root]
         while len(stack) != 0:
             node = stack.pop()
             if node.get("children"):
