@@ -70,5 +70,14 @@ class TestNextStrainParser(unittest.TestCase):
         self.assertEqual(res[0]['name'], 'node0')
         self.assertEqual(res[1]['name'], 'node1')
 
+    def test__mut_reduc(self):
+        obj = NextStrainParser({'tree': None})
+        dat = [
+            {'A': [1, 2]},
+            {'A': [1, 2, 3], 'B': [1]}
+        ]
+        res = obj._mut_reduce(dat)
+        self.assertEqual(res, {'A': [1, 2, 3], 'B': [1]}) 
+
     def tearDown(self):
         cleanup_files(TestNextStrainParser.to_remove)
