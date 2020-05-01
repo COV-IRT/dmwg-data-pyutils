@@ -42,5 +42,17 @@ class TestNextStrainParser(unittest.TestCase):
         res = obj.get_value(dat['tree'])
         self.assertEqual(res, 0)
 
+    def test_parse_attrs(self):
+        dat = {'tree': {'A': {'value': 0}, 'B': 0}}
+        obj = NextStrainParser(dat)
+        res = obj.parse_attrs(dat['tree'], ['A'])
+        self.assertEqual(res, {'A': 0}) 
+
+        res = obj.parse_attrs(dat['tree'], ['A', 'B'])
+        self.assertEqual(res, {'A': 0, 'B': 0}) 
+
+        res = obj.parse_attrs(dat['tree'], ['A', 'B', 'C'])
+        self.assertEqual(res, {'A': 0, 'B': 0, 'C': None}) 
+
     def tearDown(self):
         cleanup_files(TestNextStrainParser.to_remove)
