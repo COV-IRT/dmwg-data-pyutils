@@ -44,6 +44,16 @@ MUTATION_KEYS = [
 
 
 class NextStrainParser:
+    """
+    Caution, this implementation will actually *mutate* the JSON object
+    (`self.obj`). So my current usage in the subcommand.ParseNextStrain
+    to write out the json object to a file is dangerous. Once I use the
+    `mutation_traversal_generator` the object is modified.
+
+    Things to potentially do differently in future:
+    1. Make seprate class for loading the Nextstrain JSON.
+    2. Separate "traversal" classes from this, and only pass *copy* of json object.
+    """
     def __init__(self, obj: Dict[str, Any]):
         """Initialize the NextStrainTree by passing the deserialized
         JSON object.
