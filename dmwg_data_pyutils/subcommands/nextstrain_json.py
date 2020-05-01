@@ -21,7 +21,6 @@ from dmwg_data_pyutils.common.nextstrain import (
 from dmwg_data_pyutils.subcommands import Subcommand
 
 
-
 class ParseNextStrain(Subcommand):
     @classmethod
     def __add_arguments__(cls, parser: ArgParserT):

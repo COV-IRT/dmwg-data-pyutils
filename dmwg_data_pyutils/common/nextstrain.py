@@ -55,6 +55,7 @@ class NextStrainParser:
     1. Make seprate class for loading the Nextstrain JSON.
     2. Separate "traversal" classes from this, and only pass *copy* of json object.
     """
+
     def __init__(self, obj: Dict[str, Any]):
         """Initialize the NextStrainTree by passing the deserialized
         JSON object.
