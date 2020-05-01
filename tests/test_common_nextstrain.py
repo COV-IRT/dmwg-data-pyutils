@@ -16,12 +16,13 @@ class TestNextStrainParser(unittest.TestCase):
         curr = {"name": name, "node_attrs": {}, "branch_attrs": {}, "children": []}
         return curr
 
-    def build_test_tree(self, n_nodes=10):
-        tot = 0
+    def build_test_tree(self):
+        """Utility to get small test tree"""
         root = self.get_basic_node("root")
 
         left = self.get_basic_node("left0")
         left["branch_attrs"]["mutations"] = {"S": ["A"]}
+        left["node_attrs"]["age"] = {"value": "10"}
 
         left_1 = self.get_basic_node("left1")
         del left_1["children"]
@@ -121,6 +122,40 @@ class TestNextStrainParser(unittest.TestCase):
             mdict[key] = obj._collect_mutations(node)
 
         self.assertEqual(mdict, exp)
+
+    def test_mutation_traversal_generator(self):
+        dat = self.build_test_tree()
+        obj = NextStrainParser(dat)
+        gen = obj.mutation_traversal_generator()
+        curr = next(gen)
+        self.assertEqual(curr["name"], curr["parent"])
+        self.assertIsNone(curr["age"])
+        self.assertIsNone(curr["S"])
+        curr = next(gen)
+        self.assertEqual(curr["name"], "left0")
+        self.assertEqual(curr["parent"], "root")
+        self.assertEqual(curr["age"], "10")
+        self.assertEqual(curr["S"], ["A"])
+        curr = next(gen)
+        self.assertEqual(curr["name"], "left2")
+        self.assertEqual(curr["parent"], "left0")
+        self.assertIsNone(curr["age"])
+        self.assertEqual(curr["S"], ["A"])
+        self.assertEqual(curr["nuc"], ["B"])
+        curr = next(gen)
+        self.assertEqual(curr["name"], "left3")
+        self.assertEqual(curr["parent"], "left2")
+        self.assertIsNone(curr["age"])
+        self.assertEqual(curr["S"], ["A"])
+        self.assertEqual(curr["nuc"], ["B"])
+        curr = next(gen)
+        self.assertEqual(curr["name"], "left1")
+        self.assertEqual(curr["parent"], "left0")
+        self.assertIsNone(curr["age"])
+        self.assertEqual(curr["S"], ["A"])
+        self.assertIsNone(curr["nuc"])
+        with self.assertRaises(StopIteration):
+            curr = next(gen)
 
     def tearDown(self):
         cleanup_files(TestNextStrainParser.to_remove)
