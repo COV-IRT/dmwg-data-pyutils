@@ -24,7 +24,30 @@ pip install .
 This tool has one entrypoint `dmwg-data-pyutils` with several
 subcommands.
 
-_As tools are added, docs should be added._
+## `ParseNextStrain`
+
+This subcommands parses the NextStrain JSON file into flat TSV collecting patient metadata and
+cummulative mutations.
+
+```
+dmwg-data-pyutils ParseNextStrain -h
+usage: DMWG Data Utils ParseNextStrain [-h] [--json-path JSON_PATH] output
+
+Extracts patient metadata, viral divergence, and viral mutations from the
+nextstrain JSON file.
+
+positional arguments:
+  output                Path to output TSV file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --json-path JSON_PATH
+                        Optional path to Nextstrain JSON. If it exists, then a
+                        new version will not be downloaded from Nextstrain. If
+                        it doesn't exist, the file will be downloaded to this
+                        location. If no path is given, the JSON file will not
+                        be saved locally.
+```
 
 # How to add a new tool
 
