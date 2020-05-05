@@ -7,37 +7,36 @@ from dmwg_data_pyutils.common.nextstrain import NextStrainParser
 
 from utils import captured_output, cleanup_files
 
+def get_basic_node(name):
+    """Utility function to generate basic node template"""
+    curr = {"name": name, "node_attrs": {}, "branch_attrs": {}, "children": []}
+    return curr
+
+def build_test_tree():
+    """Utility to get small test tree"""
+    root = get_basic_node("root")
+
+    left = get_basic_node("left0")
+    left["branch_attrs"]["mutations"] = {"S": ["A"]}
+    left["node_attrs"]["age"] = {"value": "10"}
+
+    left_1 = get_basic_node("left1")
+    del left_1["children"]
+    left["children"].append(left_1)
+
+    left_2 = get_basic_node("left2")
+    left_2["branch_attrs"]["mutations"] = {"nuc": ["B"]}
+    left_3 = get_basic_node("left3")
+    del left_3["children"]
+    left_2["children"].append(left_3)
+    left["children"].append(left_2)
+    root["children"].append(left)
+
+    tree = {"tree": root}
+    return tree
 
 class TestNextStrainParser(unittest.TestCase):
     to_remove = []
-
-    def get_basic_node(self, name):
-        """Utility function to generate basic node template"""
-        curr = {"name": name, "node_attrs": {}, "branch_attrs": {}, "children": []}
-        return curr
-
-    def build_test_tree(self):
-        """Utility to get small test tree"""
-        root = self.get_basic_node("root")
-
-        left = self.get_basic_node("left0")
-        left["branch_attrs"]["mutations"] = {"S": ["A"]}
-        left["node_attrs"]["age"] = {"value": "10"}
-
-        left_1 = self.get_basic_node("left1")
-        del left_1["children"]
-        left["children"].append(left_1)
-
-        left_2 = self.get_basic_node("left2")
-        left_2["branch_attrs"]["mutations"] = {"nuc": ["B"]}
-        left_3 = self.get_basic_node("left3")
-        del left_3["children"]
-        left_2["children"].append(left_3)
-        left["children"].append(left_2)
-        root["children"].append(left)
-
-        tree = {"tree": root}
-        return tree
 
     def test_from_file_path_assert(self):
         tobj = {"_tree": 1}
@@ -105,7 +104,7 @@ class TestNextStrainParser(unittest.TestCase):
         self.assertEqual(res, {"A": [1, 2, 3], "B": [1]})
 
     def test__collect_mutations(self):
-        dat = self.build_test_tree()
+        dat = build_test_tree()
         exp = {
             "root": {},
             "left0": {"S": ["A"]},
@@ -124,7 +123,7 @@ class TestNextStrainParser(unittest.TestCase):
         self.assertEqual(mdict, exp)
 
     def test_mutation_traversal_generator(self):
-        dat = self.build_test_tree()
+        dat = build_test_tree()
         obj = NextStrainParser(dat)
         gen = obj.mutation_traversal_generator()
         curr = next(gen)
