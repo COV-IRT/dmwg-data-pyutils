@@ -7,10 +7,12 @@ from dmwg_data_pyutils.common.nextstrain import NextStrainParser
 
 from utils import captured_output, cleanup_files
 
+
 def get_basic_node(name):
     """Utility function to generate basic node template"""
     curr = {"name": name, "node_attrs": {}, "branch_attrs": {}, "children": []}
     return curr
+
 
 def build_test_tree():
     """Utility to get small test tree"""
@@ -34,6 +36,7 @@ def build_test_tree():
 
     tree = {"tree": root}
     return tree
+
 
 class TestNextStrainParser(unittest.TestCase):
     to_remove = []

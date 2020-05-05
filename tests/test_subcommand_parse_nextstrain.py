@@ -16,6 +16,7 @@ class MockArgs:
     json_path = attr.ib()
     output = attr.ib()
 
+
 class TestParseNextStrain(unittest.TestCase):
     to_remove = []
 
@@ -33,30 +34,30 @@ class TestParseNextStrain(unittest.TestCase):
         args = MockArgs(in_fn, out_fn)
         ParseNextStrain.main(args)
         hdr = []
-        with open(out_fn, 'rt') as fh:
-            hdr = fh.readline().rstrip('\r\n').split('\t')
+        with open(out_fn, "rt") as fh:
+            hdr = fh.readline().rstrip("\r\n").split("\t")
             self.assertEqual(hdr, ParseNextStrain.colnames())
-            rec = dict(zip(hdr, fh.readline().rstrip('\r\n').split('\t')))
-            self.assertEqual(rec['parent'], rec['name'])
-            self.assertEqual(rec['sex'], 'NA')
-            rec = dict(zip(hdr, fh.readline().rstrip('\r\n').split('\t')))
-            self.assertEqual(rec['parent'], 'root')
-            self.assertEqual(rec['name'], 'left0')
-            self.assertEqual(rec['age'], '10')
-            rec = dict(zip(hdr, fh.readline().rstrip('\r\n').split('\t')))
-            self.assertEqual(rec['parent'], 'left0')
-            self.assertEqual(rec['name'], 'left2')
-            self.assertEqual(rec['age'], 'NA')
-            self.assertEqual(rec['S'], 'A')
-            self.assertEqual(rec['nuc'], 'B')
-            rec = dict(zip(hdr, fh.readline().rstrip('\r\n').split('\t')))
-            self.assertEqual(rec['parent'], 'left2')
-            self.assertEqual(rec['name'], 'left3')
-            rec = dict(zip(hdr, fh.readline().rstrip('\r\n').split('\t')))
-            self.assertEqual(rec['parent'], 'left0')
-            self.assertEqual(rec['name'], 'left1')
-            rec = dict(zip(hdr, fh.readline().rstrip('\r\n').split('\t')))
-            self.assertEqual(rec, {'parent': ''}) 
+            rec = dict(zip(hdr, fh.readline().rstrip("\r\n").split("\t")))
+            self.assertEqual(rec["parent"], rec["name"])
+            self.assertEqual(rec["sex"], "NA")
+            rec = dict(zip(hdr, fh.readline().rstrip("\r\n").split("\t")))
+            self.assertEqual(rec["parent"], "root")
+            self.assertEqual(rec["name"], "left0")
+            self.assertEqual(rec["age"], "10")
+            rec = dict(zip(hdr, fh.readline().rstrip("\r\n").split("\t")))
+            self.assertEqual(rec["parent"], "left0")
+            self.assertEqual(rec["name"], "left2")
+            self.assertEqual(rec["age"], "NA")
+            self.assertEqual(rec["S"], "A")
+            self.assertEqual(rec["nuc"], "B")
+            rec = dict(zip(hdr, fh.readline().rstrip("\r\n").split("\t")))
+            self.assertEqual(rec["parent"], "left2")
+            self.assertEqual(rec["name"], "left3")
+            rec = dict(zip(hdr, fh.readline().rstrip("\r\n").split("\t")))
+            self.assertEqual(rec["parent"], "left0")
+            self.assertEqual(rec["name"], "left1")
+            rec = dict(zip(hdr, fh.readline().rstrip("\r\n").split("\t")))
+            self.assertEqual(rec, {"parent": ""})
 
     def test_cli(self):
         dat = build_test_tree()
@@ -72,10 +73,10 @@ class TestParseNextStrain(unittest.TestCase):
         with captured_output() as (_, stderr):
             main(args=["ParseNextStrain", "--json-path", in_fn, out_fn])
         serr = stderr.getvalue()
-        self.assertTrue('dmwg_data_pyutils.ParseNextStrain' in serr)
-        self.assertTrue('Found pre-existing JSON, skipping download' in serr)
-        self.assertTrue('Completed. Parsed 5 records.' in serr)
-        self.assertTrue('[dmwg_data_pyutils.main] - Finished!' in serr)
+        self.assertTrue("dmwg_data_pyutils.ParseNextStrain" in serr)
+        self.assertTrue("Found pre-existing JSON, skipping download" in serr)
+        self.assertTrue("Completed. Parsed 5 records." in serr)
+        self.assertTrue("[dmwg_data_pyutils.main] - Finished!" in serr)
 
     def tearDown(self):
         cleanup_files(TestParseNextStrain.to_remove)
